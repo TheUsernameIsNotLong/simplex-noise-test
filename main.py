@@ -1,35 +1,16 @@
+"""Main module for generating and displaying 2D simplex noise in the terminal."""
+
+from random import randint
 from opensimplex import OpenSimplex
 from rich.console import Console
-from random import randint
+from generic import get_int, get_float
 
 console = Console()
-
-def get_int(prompt: str, default: int) -> int:
-    """Get an integer input from the user, with a default value."""
-    value = input(prompt)
-    if value.strip() == "":
-        return default
-    try:
-        return int(value)
-    except ValueError:
-        print(f"Invalid input. Using default value of {default}.")
-        return default
-
-def get_float(prompt: str, default: float) -> float:
-    """Get a float input from the user, with a default value."""
-    value = input(prompt)
-    if value.strip() == "":
-        return default
-    try:
-        return float(value)
-    except ValueError:
-        print(f"Invalid input. Using default value of {default}.")
-        return default
 
 def colourise_value(value: float) -> str:
     """Convert a noise value to a colored string for terminal output."""
     # Clamp value between -1 and 1
-    clamped_value = max(-1, min(1, value))  
+    clamped_value = max(-1, min(1, value))
     # Map value to 0 - 1 range
     mapped_value = (clamped_value + 1) / 2
     # Interpolate colour from red, through yellow, to green
@@ -44,6 +25,7 @@ def generate_random_seed() -> int:
     return randint(0, 1000000)
 
 def initialise():
+    """Initialise settings by getting user input."""
 
     # 1: Seed value
     user_seed = get_int("Enter a seed number (leave blank for a random value): ", generate_random_seed())
@@ -64,7 +46,7 @@ def initialise():
             show_value = False
     except ValueError:
         show_value = False
-    
+
     return ox, num_rows, num_cols, scale, show_value
 
 def generate(ox: OpenSimplex, num_rows: int, num_cols: int, scale: float, show_value: bool):
