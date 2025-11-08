@@ -3,7 +3,6 @@
 SET VENV_DIR=venv
 
 IF NOT EXIST %VENV_DIR% (
-    ECHO Creating virtual environment...
     call bin\setup.bat
 )
 
