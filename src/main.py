@@ -3,15 +3,32 @@
 from random import randint
 from opensimplex import OpenSimplex
 from rich.console import Console
+from rich.panel import Panel
+from rich.align import Align
 from generic import get_int, get_float
 from presets import preset_colours
 from colour import determine_gradient_points, new_colourise_value
 
 console = Console()
 
+
 def generate_random_seed() -> int:
     """Generate a random seed."""
     return randint(0, 1000000)
+
+
+def print_summary_bar(user_seed: int, num_rows: int, num_cols: int, scale: float, octaves: int, persistence: float, lacunarity: float):
+    """Print a summary bar of the user's configuration."""
+    seed = f"SEED: {user_seed}"
+    size = f"SIZE: {num_rows} x {num_cols}"
+    sca = f"SCL: {scale}"
+    otv = f"OCT: {octaves}"
+    per = f"PER: {persistence}"
+    lac = f"LAC: {lacunarity}"
+    joined_text = " | ".join([seed, size, sca, otv, per, lac])
+    panel = Panel(Align.center(joined_text), style="bold", expand=False)
+    console.print(panel)
+
 
 def initialise():
     """Initialise settings by getting user input."""
@@ -51,8 +68,11 @@ def initialise():
             show_value = False
     except ValueError:
         show_value = False
+    
+    print_summary_bar(user_seed, num_rows, num_cols, scale, octaves, persistence, lacunarity)
 
     return ox, num_rows, num_cols, scale, octaves, persistence, lacunarity, gradient, show_value
+
 
 def layered_noise(ox: OpenSimplex, x: float, y: float, octaves: int, persistence: float, lacunarity: float) -> float:
     """Generate layered simplex noise value."""
@@ -68,6 +88,7 @@ def layered_noise(ox: OpenSimplex, x: float, y: float, octaves: int, persistence
         frequency *= lacunarity
 
     return total / max_value
+
 
 def generate(ox: OpenSimplex, num_rows: int, num_cols: int, scale: float, octaves: int, persistence: float, lacunarity: float, gradient: list, show_value: bool):
     """Generate and display the noise grid."""
