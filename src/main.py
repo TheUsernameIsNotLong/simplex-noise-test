@@ -26,7 +26,7 @@ def print_summary_bar(user_seed: int, num_rows: int, num_cols: int, scale: float
     per = f"PER: {persistence}"
     lac = f"LAC: {lacunarity}"
     joined_text = " | ".join([seed, size, sca, otv, per, lac])
-    panel = Panel(Align.center(joined_text), style="bold", expand=False)
+    panel = Panel(Align.center(joined_text), style="bold", width=num_cols * 2)
     console.print(panel)
 
 
