@@ -1,3 +1,3 @@
 @echo off
-venv\Scripts\python.exe main.py
+venv\Scripts\python.exe src\main.py
 pause
