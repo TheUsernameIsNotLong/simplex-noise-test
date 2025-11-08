@@ -4,7 +4,6 @@ from math import floor, ceil
 from random import randint
 from opensimplex import OpenSimplex
 from rich.console import Console
-from rich.text import Text
 from generic import get_int, get_float
 from presets import preset_colours
 
