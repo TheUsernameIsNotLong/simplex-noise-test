@@ -1,7 +1,8 @@
 """Main module for generating and displaying 2D simplex noise in the terminal."""
 
 from random import randint
-from opensimplex import OpenSimplex
+import numpy as np
+from opensimplex import OpenSimplex, noise2array
 from rich.console import Console
 from rich.panel import Panel
 from rich.align import Align
@@ -74,15 +75,20 @@ def initialise():
     return ox, num_rows, num_cols, scale, octaves, persistence, lacunarity, gradient, show_value
 
 
-def layered_noise(ox: OpenSimplex, x: float, y: float, octaves: int, persistence: float, lacunarity: float) -> float:
+def layered_noise_array(ox: OpenSimplex, width: float, height: float, scale: float, octaves: int, persistence: float, lacunarity: float) -> np.ndarray:
     """Generate layered simplex noise value."""
-    total = 0
+    total = np.zeros((height, width), dtype=np.float32)
     frequency = 1
     amplitude = 1
     max_value = 0  # Used for normalizing result to -1.0 to 1.0
 
+    x = np.arange(width) * scale
+    y = np.arange(height) * scale
+
     for _ in range(octaves):
-        total += ox.noise2(x * frequency, y * frequency) * amplitude
+
+        layer = noise2array(x * frequency, y * frequency)
+        total += layer * amplitude
         max_value += amplitude
         amplitude *= persistence
         frequency *= lacunarity
@@ -92,12 +98,13 @@ def layered_noise(ox: OpenSimplex, x: float, y: float, octaves: int, persistence
 
 def generate(ox: OpenSimplex, num_rows: int, num_cols: int, scale: float, octaves: int, persistence: float, lacunarity: float, gradient: list, show_value: bool):
     """Generate and display the noise grid."""
+
+    noise_map = layered_noise_array(ox, num_cols, num_rows, scale, octaves, persistence, lacunarity)
+
     for i in range(num_rows):
-        row = []
         for j in range(num_cols):
-            noise_value = layered_noise(ox, i * scale, j * scale, octaves, persistence, lacunarity)
+            noise_value = noise_map[i][j]
             colour = new_colourise_value(noise_value, gradient)
-            row.append(f"[{noise_value:+.2f}]")
             if not show_value:
                 console.print("[]", style=colour, end="")
             else:
