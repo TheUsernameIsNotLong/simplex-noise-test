@@ -11,9 +11,9 @@ def determine_gradient_points(num_points: int):
     gradient_points = []
     # Loop to get RGB values for each gradient point
     for i in range(num_points):
-        r = get_int(f"Enter red value (0-255) of point {i+1}/{num_points}: ", 255)
-        g = get_int(f"Enter green value (0-255) of point {i+1}/{num_points}: ", 255)
-        b = get_int(f"Enter blue value (0-255) of point {i+1}/{num_points}: ", 255)
+        r = get_int(f"Enter red value (0-255) of point {i+1}/{num_points}: ", 255, upper=255, lower=0)
+        g = get_int(f"Enter green value (0-255) of point {i+1}/{num_points}: ", 255, upper=255, lower=0)
+        b = get_int(f"Enter blue value (0-255) of point {i+1}/{num_points}: ", 255, upper=255, lower=0)
         console.print(f"Gradient point {i + 1} set.", style=f"rgb({r},{g},{b})")
         gradient_points.append([r, g, b])
     return gradient_points
