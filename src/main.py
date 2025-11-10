@@ -2,7 +2,7 @@
 
 from random import randint
 import numpy as np
-from opensimplex import OpenSimplex, noise2array
+from opensimplex import OpenSimplex
 from rich.console import Console
 from rich.panel import Panel
 from rich.align import Align
