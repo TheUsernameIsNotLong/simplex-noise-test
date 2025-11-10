@@ -87,7 +87,7 @@ def layered_noise_array(ox: OpenSimplex, width: float, height: float, scale: flo
 
     for _ in range(octaves):
 
-        layer = noise2array(x * frequency, y * frequency)
+        layer = ox.noise2array(x * frequency, y * frequency)
         total += layer * amplitude
         max_value += amplitude
         amplitude *= persistence
